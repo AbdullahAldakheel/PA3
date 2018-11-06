@@ -6,4 +6,12 @@ class BTNode<T> {
 		this.data = data;
 		parent = left = right = null;
 	}
+	
+
+	public BTNode(T data, BTNode<T> l, BTNode<T> r, BTNode<T> p) {
+		this.data = data;
+		parent = p;
+		right = r;
+		left = l;
+	}
 }
