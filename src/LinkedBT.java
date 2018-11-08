@@ -128,11 +128,15 @@ public class LinkedBT<T> implements BT<T> {
 		}
 		else {
 			BTNode<T> p = current;
-			find(Relative.Parent);
+			System.out.println(current.data);
+			System.out.println(root.data);
+			
+			current = findparent(current,root);
 			if(current.left == p) {
 				current.left = null;
 			}else {
 				current.right = null;
+				
 			}
 			current = findparent(p,root);
 			
@@ -153,12 +157,8 @@ public class LinkedBT<T> implements BT<T> {
 	}
 
 	public BTNode<T> getRoot() {
-		BTNode<T> t = null;
-		if(empty()) {
-			return t;
-		}
-		t = root;
-	return t;
+		BTNode<T> Tmp=root;
+	return Tmp;
 	
 	
 	}
