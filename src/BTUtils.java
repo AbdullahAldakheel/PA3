@@ -1,181 +1,304 @@
 
 public class BTUtils {
 
-
+		
+		private static int count=0;
 		// First Method ..
 
-	public static <T> int nbLeaf(BT<T> bt, T e) {
-		bt.find(Relative.Root);
-		int c=0;
-		return RecurNbLeaf(bt, e);
-	
-	}
-	
-	
-	private static <T> int RecurNbLeaf(BT<T> bt, T e) {
-		BT<T> Tmp = bt;
-		if(bt.empty()) {
-			return 0;
+		public static <T> int nbLeaf(BT<T> bt, T e) {
+			bt.find(Relative.Root);
+			T Tmp = bt.retrieve();
+
+			int tm = RecNbLeaf(bt, e, Tmp);
+			tm += RecNbLeaf2(bt, e, Tmp);
+			return tm ;
+			
 		}
-		if(bt.isLeaf()) {
-			if(bt.retrieve().equals(e)) {
-				return 1;
-			}else {
+		private static <T> int RecNbLeaf(BT<T> bt, T e , T Tmp) {
+			if(bt.empty()) {
 				return 0;
 			}
-		}
-			if(Tmp.isLeaf()) {
-				if(Tmp.retrieve().equals(e)) {
+			if( bt.isLeaf() ) {
+				if(bt.retrieve().equals(e)) {
 					return 1;
 				}else {
 					return 0;
 				}
-		}
-		
-				
-			return checkRightLift(bt.find(Relative.RightChild),bt, e, 1) + checkRightLift(bt.find(Relative.LeftChild), bt, e, 2);		
-		
 			}
-	
-	private static <T> int checkRightLift(boolean find, BT<T> bt, T e, int i) {
-		if(find) {
 			
+			count++;
+			return RecNbLeaf2(bt, e, 1, Tmp) + RecNbLeaf2(bt, e, 2, Tmp);
+			
+			
+			
+		}
+		private static <T> int RecNbLeaf2(BT<T> bt, T e ,int i,T Tmp) {
 			if(i==1) {
-				return RecurNbLeaf(bt, e);
+				bt.find(Relative.LeftChild);
+				return RecNbLeaf(bt, e, Tmp);
 			}else {
 				bt.find(Relative.Parent);
-				bt.find(Relative.Parent);
-				bt.find(Relative.LeftChild);
-				return RecurNbLeaf(bt, e);
-			}
-			
-		}else if(!find) {
-			if(i==2) {
-				bt.find(Relative.Parent);
-				bt.find(Relative.LeftChild);
-				return RecurNbLeaf(bt, e);
+				if(bt.retrieve().equals(Tmp)) {
+					return 0;
+				}
+				bt.find(Relative.RightChild);
+				return RecNbLeaf(bt, e, Tmp);
 			}
 		}
-		return 0;
-	}
+		
+		private static <T> int RecNbLeaf2(BT<T> bt, T e , T Tmp) {
+			if(bt.empty()) {
+				return 0;
+			}
+			if( bt.isLeaf() ) {
+				if(bt.retrieve().equals(e)) {
+					return 1;
+				}else {
+					return 0;
+				}
+			}
+			
+			count++;
+			return RecNbLeaf22(bt, e, 1, Tmp) + RecNbLeaf22(bt, e, 2, Tmp);
+			
+			
+			
+		}
+		private static <T> int RecNbLeaf22(BT<T> bt, T e ,int i,T Tmp) {
+			if(i==1) {
+				bt.find(Relative.RightChild);
+				return RecNbLeaf2(bt, e, Tmp);
+			}else {
+				bt.find(Relative.Parent);
+				if(bt.retrieve().equals(Tmp)) {
+					return 0;
+				}
+				bt.find(Relative.LeftChild);
+				return RecNbLeaf2(bt, e, Tmp);
+			}
+		}
+
+
 
 		// Second Method ..
 	
 	
-	public static <T> void pruneBranch(BT<T> bt, T e) {
-
-		
+		public static <T> void pruneBranch(BT<T> bt, T e) {	
 		bt.find(Relative.Root);
 		recursivePruneBranch(bt, e);
-		
-
-		
-		
-		
-		
-		
-		
-		
-		
+		if(bt.find(Relative.Root)) {
+			recursivePruneBranch2(bt, e);
+		}
 	}
-	private static <T> void recursivePruneBranch(BT<T> bt, T e) {
-		boolean G = true;
+		
+		private static <T> int recursivePruneBranch(BT<T> bt, T e) {
+		
 		if(bt.empty()) {
-			return;
+			return 0;
 		}
 		if(bt.isLeaf()) {
 						if(bt.retrieve().equals(e)) {
-							System.out.println("leaf deleted");
-							G = false;
 							bt.deleteSub();
 						
-							return;
+							return 1;
 						}else {
-				
-							return;
+							
+							return 0;
 						}
 		}else {
 			if(bt.retrieve().equals(e)) {
 				bt.deleteSub();
-				System.out.println("D");
-				return;
+				return 1;
 			}
-			System.out.println("here");
-
 			
-				checkTrueFalse(bt.find(Relative.RightChild), bt, e, 1);
-				System.out.println("del");
-				
-				checkTrueFalse(G, bt, e, 2);
-				
+			
+				return checkTrueFalse(bt, e, 1) + checkTrueFalse(bt, e, 2) ;
+				//+ checkTrueFalse(bt.find(Relative.RightChild), bt, e, 2);
 			
 		}
 	}
+		private static <T> int checkTrueFalse(BT<T> bt, T e, int i) {
+		if(i==1) {
+			bt.find(Relative.LeftChild);
 
-	private static <T> boolean checkTrueFalse(boolean find,BT<T> bt, T e, int i) {
+			return recursivePruneBranch(bt, e);
+		}else {
+			bt.find(Relative.RightChild);
+
+			return recursivePruneBranch(bt, e);
+		}
+	}
+		
+		private static <T> int recursivePruneBranch2(BT<T> bt, T e) {
+			if(bt.empty()) {
+				return 0;
+			}
+			if(bt.isLeaf()) {
+							if(bt.retrieve().equals(e)) {
+								System.out.println("leaf deleted");
+								bt.deleteSub();
+							
+								return 1;
+							}else {
+								
+								return 0;
+							}
+			}else {
+				if(bt.retrieve().equals(e)) {
+					bt.deleteSub();
+					System.out.println("D");
+					return 1;
+				}
+				
+				
+					return checkTrueFalse2(bt, e, 1) + checkTrueFalse2(bt, e, 2) ;
+					//+ checkTrueFalse(bt.find(Relative.RightChild), bt, e, 2);
+				
+			}
+		}
+		private static <T> int checkTrueFalse2(BT<T> bt, T e, int i) {
+			if(i==1) {
+				bt.find(Relative.RightChild);
+
+				return recursivePruneBranch2(bt, e);
+			}else {
+				bt.find(Relative.LeftChild);
+
+				return recursivePruneBranch2(bt, e);
+			}
+		}
+
+
+//		if(find) {
+//			
+//			if(i==1) {
+//				return RecurNbLeaf(bt, e);
+//			}else {
+//				bt.find(Relative.Parent);
+//				//bt.find(Relative.Parent);
+//				//bt.find(Relative.LeftChild);
+//				return RecurNbLeaf(bt, e);
+//			}
+//			
+//		}else if(!find) {
+//			if(i==2) {
+//				bt.find(Relative.Parent);
+//				bt.find(Relative.LeftChild);
+//				return RecurNbLeaf(bt, e);
+//			}
+//		}
+//		return 0;
+		/*
 		if(find) {
 			
 			if(i==1) {
-				 recursivePruneBranch(bt, e);
+				 return recursivePruneBranch(bt, e);
 			}else {
 				
-				bt.find(Relative.Parent);
+			//	bt.find(Relative.Parent);
+			//bt.find(Relative.Parent);
+
+			//bt.find(Relative.LeftChild);
+				return recursivePruneBranch(bt, e);
 				
-				bt.find(Relative.LeftChild);
-				recursivePruneBranch(bt, e);
+
 			}
 			
 		}else if(!find) {
 			if(i==2) {
-				
+				bt.find(Relative.Parent);
 				bt.find(Relative.LeftChild);
-				recursivePruneBranch(bt, e);
+				return recursivePruneBranch(bt, e);
 			}else {
-				System.out.println("efwwefe");
-			}
+				return 0;	
+				}
 		}
-		return true;
-	}
+		return 0;
+	*/
 	
-	public static <T> void print(BT<T> bt){
-		if(bt.empty()) {
-			return ;
-		}
-		if(bt.isLeaf()) {
-			System.out.println(bt.retrieve());
-			return;
-		}
+	
 		
-		
-		BT<T> Tmp = bt;
-		System.out.println(bt.retrieve());
-		bt.find(Relative.LeftChild);
-		Tmp.find(Relative.RightChild);
-		
-			 print(bt) ;
-				//System.out.println(Tmp.retrieve());
-
-			 print(Tmp);
-			
-			
-			
-		}
 	
 			public static void main(String[] args) {
-		
-				LinkedBT BT = new LinkedBT();
-
-				BT.insert(10, Relative.Root);
-				System.out.println(BT.insert(30, Relative.LeftChild));
-				BT.find(Relative.Root);
-				System.out.println(BT.insert(20, Relative.RightChild));
-				BT.find(Relative.Root);
-				print(BT);
-				pruneBranch(BT,30);
-				System.out.println("delete");
-				BT.find(Relative.Root);
-				BT.toString();
+				LinkedBT<Integer> c = new LinkedBT<Integer>();
 				
+
+				c.insert(10, Relative.Root);
+				c.insert(15, Relative.LeftChild);
+				c.insert(30, Relative.LeftChild);
+				c.find(Relative.Parent);
+				c.insert(50, Relative.RightChild);
+				c.find(Relative.Root);
+				c.insert(17, Relative.RightChild);
+				c.insert(14, Relative.LeftChild);
+				c.find(Relative.Parent);
+				c.insert(16, Relative.RightChild);
+				c.insert(17, Relative.LeftChild);
+				c.find(Relative.Parent);
+				c.insert(16, Relative.RightChild);
+
+				int leaf = nbLeaf(c ,50);
+				System.out.println(leaf);
+				
+
+//				LinkedBT<Integer> c = new LinkedBT<Integer>();
+				
+
+//				c.insert(10, Relative.Root);
+//				c.insert(15, Relative.LeftChild);
+//				c.insert(16, Relative.LeftChild);
+//				c.find(Relative.Parent);
+//				c.insert(16, Relative.RightChild);
+//				c.insert(6, Relative.RightChild);
+//				c.insert(5, Relative.RightChild);
+//				c.insert(4, Relative.RightChild);
+//				c.insert(3, Relative.RightChild);
+//				c.insert(2, Relative.RightChild);
+//				c.insert(1, Relative.RightChild);
+//				c.find(Relative.Root);
+//				c.insert(17, Relative.RightChild);
+//				c.insert(10, Relative.LeftChild);
+//				c.find(Relative.Parent);
+//				c.insert(16, Relative.RightChild);
+//				c.insert(17, Relative.LeftChild);
+//				c.find(Relative.Parent);
+//				c.insert(16, Relative.RightChild);
+//				c.insert(6, Relative.RightChild);
+//				c.insert(5, Relative.RightChild);
+//				c.insert(4, Relative.RightChild);
+//				c.insert(3, Relative.RightChild);
+//				c.insert(2, Relative.RightChild);
+//				c.insert(1, Relative.RightChild);
+				
+
+//				c.insert(1, Relative.Root);
+//				c.insert(2, Relative.RightChild);
+//				c.insert(3, Relative.RightChild);
+//				c.insert(4, Relative.RightChild);
+//				c.insert(5, Relative.RightChild);
+//				c.insert(6, Relative.RightChild);
+//				c.insert(7, Relative.RightChild);
+//				c.insert(8, Relative.RightChild);
+//				c.insert(9, Relative.RightChild);
+//				c.find(Relative.Root);
+//				c.insert(1, Relative.Root);
+//				c.insert(2, Relative.LeftChild);
+//				c.insert(3, Relative.LeftChild);
+//				c.insert(4, Relative.LeftChild);
+//				c.insert(5, Relative.LeftChild);
+//				c.insert(6, Relative.LeftChild);
+//				c.insert(7, Relative.LeftChild);
+//				c.insert(8, Relative.LeftChild);
+//				c.insert(9, Relative.LeftChild);
+				
+
+
+				//int leaf = nbLeaf(c ,9);
+
+
+				
+
+
 			}
 
 

@@ -27,7 +27,8 @@ public class LinkedBT<T> implements BT<T> {
 					if(current == root) {
 						return false;
 					}
-					current = findparent(current, root);
+					current = current.parent; 
+					//findparent(current, root);	
 					return true;
 		case LeftChild:
 					if(current.left == null) {
@@ -101,7 +102,9 @@ public class LinkedBT<T> implements BT<T> {
 					}
 					
 					current.left = new BTNode<T>(val);
+					BTNode<T> Tmp = current;
 					current = current.left;
+					current.parent =  Tmp;
 					return true;
 				
 		case RightChild: 
@@ -110,7 +113,10 @@ public class LinkedBT<T> implements BT<T> {
 					}
 					
 					current.right = new BTNode<T>(val);
+					BTNode<T> Tmp2 = current;
 					current = current.right;
+					current.parent =  Tmp2;
+
 					return true;
 					
 		default: 
@@ -128,17 +134,17 @@ public class LinkedBT<T> implements BT<T> {
 		}
 		else {
 			BTNode<T> p = current;
-			System.out.println(current.data);
-			System.out.println(root.data);
+			//current = p;
+			//current = findparent(current,root);
 			
-			current = findparent(current,root);
+			current = current.parent;
 			if(current.left == p) {
 				current.left = null;
-			}else {
+			}else if(current.right == p){
 				current.right = null;
 				
 			}
-			current = findparent(p,root);
+			
 			
 		}
 		
@@ -147,11 +153,11 @@ public class LinkedBT<T> implements BT<T> {
 
 	public boolean isLeaf() {
 
-		if(!empty()) {
+		
 			if(current.left == null && current.right == null) {
 				return true;
 			}
-		}
+		
 		return false;
 
 	}
@@ -161,6 +167,25 @@ public class LinkedBT<T> implements BT<T> {
 	return Tmp;
 	
 	
+	}
+	
+	public int print(BTNode<T> left) {
+		if(left==null) {
+			return 0;
+		}
+		 
+		if(left.left== null && left.right == null) {
+			System.out.println(left.data);
+
+			return 1;
+		}
+		System.out.println(left.data);
+		
+		return print(left.left) + print(left.right) + 1;
+		
+		
+		
+		
 	}
 
 }
