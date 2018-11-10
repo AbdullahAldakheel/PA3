@@ -4,7 +4,7 @@ public class BTUtils {
 		
 		
 		// First Method ..
-/*
+
 		public static <T> int nbLeaf(BT<T> bt, T e) {
 			bt.find(Relative.Root);
 			if(bt.empty()) {
@@ -64,7 +64,7 @@ public class BTUtils {
 			}
 		}
 		
-		*/
+		
 
 
 
