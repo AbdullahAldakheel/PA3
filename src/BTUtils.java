@@ -6,64 +6,58 @@ public class BTUtils {
 		// First Method ..
 	
 
-	private static boolean leftChecked=false;
-	private static boolean rightChecked=false;
+	private static int tmp;
+	private static int count=0;
+	private static boolean rightChecked;
+	private static boolean leftChecked;
 
 	public static <T> int nbLeaf(BT<T> bt, T e) {
 			bt.find(Relative.Root);
 			if(bt.empty()) {
 				return 0;
 			}
-			 
-			 return RecNbLeaf(bt, e,0);
+			 count=0;
+			 leftChecked=false;
+					 RecNbLeaf(bt, e);
+					 return count;
 	}
 
-	private static <T> int RecNbLeaf(BT<T> Hash, T e, int i) {
-			if(Hash.isLeaf() && Hash.equals(e)) {
-				while(Hash.find(Relative.Parent)&& i==2) {
-					if(Hash.find(Relative.RightChild))
-						break;
-				}
-				Hash.find(Relative.Parent);
+	private static <T> int RecNbLeaf(BT<T> Hash, T e) {
+		System.out.println(Hash.retrieve());
+			if(Hash.isLeaf() && Hash.retrieve().equals(e)) {
+				
+				count++;
+				
 				return 1;
 			}
 			if(Hash.isLeaf()) {
+		
+				return 0;
 				
-				while(Hash.find(Relative.Parent)&& i==2) {
-					if(Hash.find(Relative.RightChild))
-						break;
-				}
-				Hash.find(Relative.Parent);
+			}
+			
+			leftChecked = Hash.find(Relative.LeftChild);
+				if(!leftChecked) {
 				return 0;
 			}
-			return RecNbLeaf2(Hash, e, 1) + RecNbLeaf2(Hash, e, 2);
-
+			int x = RecNbLeaf(Hash, e);
+			if(leftChecked) {
+				Hash.find(Relative.Parent); 
+			}
+			rightChecked = Hash.find(Relative.RightChild);
+				if(!rightChecked) {
+					for(int i =0 ; i<=tmp ; i++) {
+						Hash.find(Relative.Parent); 
+					}
+				//	tmp=0;
+					return 0;
+				}
+				tmp++;
+			int y = RecNbLeaf(Hash, e);
+			//Hash.find(Relative.Parent);
+			return x+y;
 	
 		
-}
-	private static <T> int RecNbLeaf2(BT<T> Hash, T e, int i) {
-;
-		if(i==1) {
-			
-			leftChecked=Hash.find(Relative.LeftChild);
-			if(!leftChecked) return 0;
-			
-			return RecNbLeaf(Hash, e, 1);
-		}else {
-			rightChecked=Hash.find(Relative.RightChild);
-			if(!rightChecked) {
-				while(Hash.find(Relative.Parent)&& i==2) {
-					if(Hash.find(Relative.RightChild))
-						break;
-				}
-				Hash.find(Relative.Parent);
-				return 0;
-			}
-			
-			return RecNbLeaf(Hash, e, 2);
-			
-			
-		}
 
 
 	
@@ -362,32 +356,67 @@ public class BTUtils {
 	
 		
 	
+		public <T> int nbLeafimp(BTNode<T> left, T e) {
+			if(left==null) {
+				return 0;
+			}
+			if(left.left== null && left.right == null) {
+				if(left.data.equals(e)) {
+					return 1;
+				}
+				return 0;
+			};
+		
+			return nbLeafimp(left.left, e) + nbLeafimp(left.right, e);	
+		}
 			public static void main(String[] args) {
 				LinkedBT<Integer> c = new LinkedBT<Integer>();
 				
 
 				c.insert(10, Relative.Root);
 				c.insert(20, Relative.LeftChild);
-				c.insert(40, Relative.RightChild);
-				c.insert(50, Relative.LeftChild);
-				c.find(Relative.Parent);
-				c.find(Relative.Parent);
-				c.insert(30, Relative.LeftChild);
-				c.find(Relative.Root);
-				c.insert(50, Relative.RightChild);
-				c.insert(60, Relative.LeftChild);
-				c.find(Relative.Parent);
-				c.insert(70, Relative.RightChild);
-				c.insert(45, Relative.LeftChild);
+				c.insert(20, Relative.LeftChild);
+				c.insert(20, Relative.LeftChild);
+				c.insert(20, Relative.LeftChild);
+				c.insert(20, Relative.LeftChild);
+				c.insert(20, Relative.LeftChild);
+				c.insert(20, Relative.LeftChild);
+				c.insert(20, Relative.LeftChild);
+				c.insert(20, Relative.LeftChild);
+				c.insert(2, Relative.LeftChild);
+
+
+				c.insert(5, Relative.RightChild);
+			//	c.insert(80, Relative.RightChild);
+			//	c.insert(70, Relative.RightChild);
+			//	c.insert(60, Relative.RightChild);
+			//	c.insert(20, Relative.RightChild);
+				//c.insert(50, Relative.RightChild);
+				//c.insert(50, Relative.RightChild);
+				//c.insert(50, Relative.RightChild);
+			//	c.insert(50, Relative.RightChild);
+				c.insert(20, Relative.LeftChild);
+				c.insert(20, Relative.LeftChild);
+				c.insert(20, Relative.LeftChild);
+				c.insert(5, Relative.RightChild);
+				c.insert(20, Relative.LeftChild);
+				c.insert(20, Relative.LeftChild);
+				c.insert(20, Relative.LeftChild);
+				c.insert(20, Relative.LeftChild);
+				c.insert(20, Relative.LeftChild);
+
+				
+				c.insert(23, Relative.RightChild);
+				
 				c.print(c.getRoot());
 
 				System.out.println("===");
-				System.out.println(nbLeaf(c, 45));
+				System.out.println(nbLeaf(c, 23));
 				
 
 				
 				LinkedBT<Integer> g = new LinkedBT<Integer>();
-
+System.out.println("=========");
 				
 				g.insert(10, Relative.Root);
 				g.insert(15, Relative.LeftChild);

@@ -72,6 +72,7 @@ public class Staircase {
 	
 			LinkedBT<Integer> haShm =  (LinkedBT<Integer>) getTree(n, k1, k2);
 			BTUtils B = new BTUtils();
+			
 			return B.nbLeaf(haShm, n);
 			
 
@@ -91,15 +92,15 @@ public class Staircase {
 	public static void main(String[] args) {
 		
 		
-		LinkedBT<Integer> T = (LinkedBT<Integer>) getTree(6,1,2);
+		LinkedBT<Integer> T = (LinkedBT<Integer>) getTree(20,1,2);
 		
 	
 		
-		T.print(T.getRoot());
+		//T.print(T.getRoot());
 		System.out.println("===");
-		//int k =getNbSol(30,3,6);
+		int k =getNbSol(4,1,2);
 		System.out.println("===");
-		//System.out.println(k);
+		System.out.println(k);
 		
 		//LinkedBT<Integer> T1 = (LinkedBT<Integer>)getTreeWithout(6,1,2,3);
 		//T1.print(T1.getRoot());

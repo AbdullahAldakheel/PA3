@@ -187,6 +187,25 @@ public class LinkedBT<T> implements BT<T> {
 		
 		
 	}
+	
+	public int nbLeafimp(BTNode<T> left, T e) {
+		if(left==null) {
+			return 0;
+		}
+		 
+		if(left.left== null && left.right == null) {
+			if(left.data.equals(e)) {
 
+				return 1;
+			}
+				return 0;
+		};
+		
+		return print(left.left) + print(left.right);
+		
+		
+		
+		
+	}
 	
 }
