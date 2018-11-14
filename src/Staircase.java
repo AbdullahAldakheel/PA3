@@ -91,18 +91,19 @@ public class Staircase {
 	public static void main(String[] args) {
 		
 		
-		LinkedBT<Integer> T = (LinkedBT<Integer>) getTree(4,1,2);
+		LinkedBT<Integer> T = (LinkedBT<Integer>) getTree(6,1,2);
 		
 	
 		
 		T.print(T.getRoot());
 		System.out.println("===");
-		System.out.println(getNbSol(4,1,2));
+		//int k =getNbSol(30,3,6);
 		System.out.println("===");
+		//System.out.println(k);
 		
-		LinkedBT<Integer> T1 = (LinkedBT<Integer>)getTreeWithout(4,1,2,3);
-		T1.print(T1.getRoot());
-		System.out.println("===");
-		System.out.println(getNbSolWithout(4,1,2,3));
+		//LinkedBT<Integer> T1 = (LinkedBT<Integer>)getTreeWithout(6,1,2,3);
+		//T1.print(T1.getRoot());
+		//System.out.println("===");
+		//System.out.println(getNbSolWithout(6,1,2,3));
 	}
 }
